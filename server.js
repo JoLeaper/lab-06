@@ -21,10 +21,10 @@ app.get('/location', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
-    // code that formats weather correctly
+    const object = formatWeatherObject();
+    console.log(object);
+    res.json(object);
     
-    // return object that is weather formatted correctly
-    res.json();
 });
 
 app.listen(PORT, () => console.log('listening on 3001'));
@@ -41,12 +41,15 @@ function formatObject() {
     return firstFormattedObject;
 }
 
-function formatWeatherObject () {
-    const firstObject = geoData[0];
-}
+function formatWeatherObject() {
+    const weatherArray = weatherData.data;
 
-    // const locationObject = {
-    //     formatted_query: formattedQuery,
-    //     latitude: latitude;
-    //     longitutde: longitutde;
-    // }
+    const formattedObjectArray = weatherArray.map(weatherObject => {
+        return {
+            forecast: weatherObject.weather.description,
+            time: weatherObject.datetime
+        };
+    });
+    return formattedObjectArray;
+
+}
