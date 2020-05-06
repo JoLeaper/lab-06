@@ -13,23 +13,19 @@ const PORT = process.env.PORT || 3000;
 // - enable CORS
 app.use(cors());
 const geoData = require('./data/geo.json');
+const weatherData = require('./data/weather.json');
 
 app.get('/location', (req, res) => {
     const object = formatObject();
-    console.log(object);
     res.json(object);
 });
 
-// app.get('/weather', (req, res) => {
-//     // code that formats weather correctly
+app.get('/weather', (req, res) => {
+    // code that formats weather correctly
     
-//     // return object that is weather formatted correctly
-//     res.json({
-//         formatted_query: 'Seattle, WA, USA',
-//         latitude: '47.606210',
-//         longitude: '-122.332071',
-//     });
-// });
+    // return object that is weather formatted correctly
+    res.json();
+});
 
 app.listen(PORT, () => console.log('listening on 3001'));
 
@@ -43,7 +39,11 @@ function formatObject() {
         longitude: firstObject.lon,
     };
     return firstFormattedObject;
-} 
+}
+
+function formatWeatherObject () {
+    const firstObject = geoData[0];
+}
 
     // const locationObject = {
     //     formatted_query: formattedQuery,
