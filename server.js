@@ -27,6 +27,14 @@ app.get('/weather', (req, res) => {
     
 });
 
+app.get('*', (req, res) => {
+    res.json({
+        status: 500,
+        responseText: 'Sorry, something went wrong'
+    });
+    
+});
+
 app.listen(PORT, () => console.log('listening on 3001'));
 
 function formatObject() {
