@@ -16,22 +16,18 @@ const geoData = require('./data/geo.json');
 const weatherData = require('./data/weather.json');
 
 app.get('/location', (req, res) => {
-    const object = formatObject();
-    res.json(object);
+    try {
+        const object = formatObject();
+        res.json(object);
+    }
+    catch(err) {
+        res.status(500).send('Sorry something went wrong');
+    }
 });
-
 app.get('/weather', (req, res) => {
     const object = formatWeatherObject();
     console.log(object);
     res.json(object);
-    
-});
-
-app.get('*', (req, res) => {
-    res.json({
-        status: 500,
-        responseText: 'Sorry, something went wrong'
-    });
     
 });
 
