@@ -33,7 +33,10 @@ app.get('/weather', (req, res) => {
 
 app.listen(PORT, () => console.log('listening on 3001'));
 
-function formatObject() {
+function formatObject(res) {
+    if(res !== 'Portland') {
+        throw new Error();
+    }
     const firstObject = geoData[0];
     const queryNameArray = firstObject.display_name.split(' ');
 
