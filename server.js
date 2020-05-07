@@ -12,13 +12,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // - enable CORS
 app.use(cors());
+let lat = '';
+let lon = '';
 
 app.get('/location', (req, res) => {
     try {
         getLocation(req).then((locationObject => {
             const response = formatObject(locationObject);
-            // lat = response.latitude;
-            // lon = response.longitude;
+            lat = response.latitude;
+            lon = response.longitude;
             res.json(response);
         }));
     }
