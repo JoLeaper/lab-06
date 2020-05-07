@@ -12,8 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // - enable CORS
 app.use(cors());
-let lat = '';
-let lon = '';
+let lat = '45.5051';
+let lon = '-122.6750';
 
 app.get('/location', (req, res) => {
 
@@ -27,9 +27,11 @@ app.get('/location', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
-    const weatherResponse = getWeather();
-    const parseWeather = formatWeatherObject(weatherResponse);
-    res.json(parseWeather);
+    getWeather().then((weatherResponse => {
+        const parseWeather = formatWeatherObject(weatherResponse.data);
+        res.json(parseWeather);
+    }));
+    
 });
 
 app.listen(PORT, () => console.log('listening on 3001'));
@@ -40,9 +42,10 @@ const getLocation = async(citySearched) => {
     return JSON.parse(geoData.text)[0];
 };
 
-const getWeather = async(lat, lon) => {
-    const weatherData = await request.get(`https://api.weatherbit.io/v2.0/current?&lat=${lat}&lon=${lon}&key=${process.env.WEATHERBIT_API_KEY}`);
-    return JSON.parse(weatherData.data)
+const getWeather = async() => {
+    const weatherData = await request.get(`http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHERBIT_API_KEY}&lat=${lat}&lon=${lon}`);
+    return JSON.parse(weatherData.text);
+    
 };
 
 // formats the object
@@ -54,21 +57,8 @@ function formatObject(firstObject) {
     };
 }
 
-
-function getLatLon(firstObject) {
-    try {
-        const latLonObject = {
-            latitude: firstObject.lat,
-            longitude: firstObject.lon,
-        };
-        return latLonObject;
-    }
-    catch(err) {
-        throw new Error();
-    }
-}
-
 function formatWeatherObject(weatherArray) {
+    console.log(weatherArray);
     return weatherArray.map(weatherObject => {
         return {
             forecast: weatherObject.weather.description,
