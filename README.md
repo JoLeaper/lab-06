@@ -10,4 +10,4 @@
 <!-- What are the steps that a developer user must take in order to build this app on their own machine and get it running? -->
 
 ## Architecture
-<!-- To the best of your ability, provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. The audience would be a new developer user to the project -->
+<!-- To the best of your ability, provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. The audience would be a new developer user to the project. //-->
