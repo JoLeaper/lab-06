@@ -16,17 +16,14 @@ let lat = '';
 let lon = '';
 
 app.get('/location', (req, res) => {
-    try {
-        getLocation(req.query.search).then((locationObject => {
-            const response = formatObject(locationObject);
-            lat = response.latitude;
-            lon = response.longitude;
-            res.json(response);
-        }));
-    }
-    catch(err) {
-        res.status(500).send('Sorry something went wrong');
-    }
+
+    getLocation(req.query.search).then((locationObject => {
+        const response = formatObject(locationObject);
+        lat = response.latitude;
+        lon = response.longitude;
+        res.json(response);
+    }));
+
 });
 
 app.get('/weather', (req, res) => {
