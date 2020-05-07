@@ -18,7 +18,9 @@ let lon = '';
 app.get('/location', (req, res) => {
 
     getLocation(req.query.search).then((locationObject => {
+        console.log(req.query.search);
         const response = formatObject(locationObject);
+        console.log(response);
         lat = response.latitude;
         lon = response.longitude;
         res.json(response);
@@ -42,18 +44,13 @@ const getLocation = async(citySearched) => {
 
 // formats the object
 function formatObject(firstObject) {
-    try {
-        const firstFormattedObject = {
-            formatted_query: firstObject.display_name,
-            latitude: firstObject.lat,
-            longitude: firstObject.lon,
-        };
-        return firstFormattedObject;
-    }
-    catch(err) {
-        throw new Error();
-    }
+    return {
+        formatted_query: firstObject.display_name,
+        latitude: firstObject.lat,
+        longitude: firstObject.lon,
+    };
 }
+
 
 function getLatLon(firstObject) {
     try {
