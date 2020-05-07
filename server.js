@@ -26,7 +26,7 @@ app.get('/location', (req, res) => {
 
 });
 
-app.get('/weather', ( res) => {
+app.get('/weather', (req, res) => {
     getWeather().then((weatherResponse => {
         const parseWeather = formatWeatherObject(weatherResponse.data);
         res.json(parseWeather);
