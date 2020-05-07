@@ -33,7 +33,7 @@ app.get('/weather', (req, res) => {
     }));
     
 });
-app.get('/trails', (req, res) => {
+app.get('/events', (req, res) => {
     getTrails().then((trailResponse => {
         const parseTrail = formatTrailObject(trailResponse.data);
         res.json(parseTrail);
