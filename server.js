@@ -17,7 +17,7 @@ let lon = '';
 
 app.get('/location', (req, res) => {
     try {
-        getLocation(req).then((locationObject => {
+        getLocation(req.query.search).then((locationObject => {
             const response = formatObject(locationObject);
             lat = response.latitude;
             lon = response.longitude;
