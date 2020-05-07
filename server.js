@@ -107,6 +107,7 @@ function formatTrailObject(trailArray) {
             trail_url: trailObject.url,
             conditions: trailObject.conditionStatus + ' ' + trailObject.conditionDetails,
             condition_date: trailObject.conditionDate.toString().slice(0, 10),
+            condition_time: trailObject.conditionDate.toString().slice(12, 19)
         };
     });
 }
