@@ -16,7 +16,8 @@ app.use(cors());
 app.get('/location', async(req, res) => {
     try {
         const searchedLocation = getLocation(res);
-        res.json(searchedLocation);
+        const formattedLocation = formatObject(searchedLocation);
+        res.json(formattedLocation);
     }
     catch(err) {
         res.status(500).send('Sorry something went wrong');
