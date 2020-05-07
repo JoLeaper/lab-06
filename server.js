@@ -18,9 +18,7 @@ let lon = '';
 app.get('/location', (req, res) => {
 
     getLocation(req.query.search).then((locationObject => {
-        console.log(req.query.search);
         const response = formatObject(locationObject);
-        console.log(response);
         lat = response.latitude;
         lon = response.longitude;
         res.json(response);
@@ -29,9 +27,9 @@ app.get('/location', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
-    const object = formatWeatherObject();
-    res.json(object);
-    
+    const weatherResponse = getWeather();
+    const parseWeather = formatWeatherObject(weatherResponse);
+    res.json(parseWeather);
 });
 
 app.listen(PORT, () => console.log('listening on 3001'));
@@ -40,6 +38,11 @@ app.listen(PORT, () => console.log('listening on 3001'));
 const getLocation = async(citySearched) => {
     const geoData = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${citySearched}&format=json`);
     return JSON.parse(geoData.text)[0];
+};
+
+const getWeather = async(lat, lon) => {
+    const weatherData = await request.get(`https://api.weatherbit.io/v2.0/current?&lat=${lat}&lon=${lon}&key=${process.env.WEATHERBIT_API_KEY}`);
+    return JSON.parse(weatherData.data)
 };
 
 // formats the object
@@ -65,21 +68,11 @@ function getLatLon(firstObject) {
     }
 }
 
-function formatWeatherObject() {
-    const weatherArray = weatherData.data;
-    try {
-        const formattedObjectArray = weatherArray.map(weatherObject => {
-            return {
-                forecast: weatherObject.weather.description,
-                time: weatherObject.datetime
-            };
-        });
-        return formattedObjectArray;
-    
-    }
-    catch(err) {
-        throw new Error();
-    }
-
-
+function formatWeatherObject(weatherArray) {
+    return weatherArray.map(weatherObject => {
+        return {
+            forecast: weatherObject.weather.description,
+            time: weatherObject.datetime
+        };
+    });
 }
