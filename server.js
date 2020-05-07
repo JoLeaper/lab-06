@@ -26,13 +26,28 @@ app.get('/location', (req, res) => {
 
 });
 
-app.get('/weather', (req, res) => {
+app.get('/weather', ( res) => {
     getWeather().then((weatherResponse => {
         const parseWeather = formatWeatherObject(weatherResponse.data);
         res.json(parseWeather);
     }));
     
 });
+app.get('/trails', (req, res) => {
+    getTrails().then((trailResponse => {
+        const parseTrail = formatTrailObject(trailResponse.data);
+        res.json(parseTrail);
+    }));
+    
+});
+
+// app.get('/yelp', (req, res) => {
+//     getYelp().then((yelpResponse => {
+//         const parseYelp = formatYelpObject(yelpResponse.data);
+//         res.json(parseYelp);
+//     }));
+    
+// });
 
 app.listen(PORT, () => console.log('listening on 3001'));
 
@@ -48,6 +63,20 @@ const getWeather = async() => {
     
 };
 
+const getTrails = async() => {
+    const trailData = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=200&key=${process.env.HIKING_API_KEY}`);
+    return JSON.parse(trailData.text);
+};
+
+// const getYelp = async() => {
+//     const yelpData = await request.get(`https://api.yelp.com/v3/search?latitude=${lat}&longitude=${lon}`)
+//         .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`
+//         );
+//     console.log(yelpData.text);
+//     return JSON.parse(yelpData.text);
+    
+// };
+
 // formats the object
 function formatObject(firstObject) {
     return {
@@ -58,7 +87,6 @@ function formatObject(firstObject) {
 }
 
 function formatWeatherObject(weatherArray) {
-    console.log(weatherArray);
     return weatherArray.map(weatherObject => {
         return {
             forecast: weatherObject.weather.description,
@@ -66,3 +94,32 @@ function formatWeatherObject(weatherArray) {
         };
     });
 }
+
+function formatTrailObject(trailArray) {
+    return trailArray.map(trailObject => {
+        return {
+            name: trailObject.name,
+            location: trailObject.location,
+            length: trailObject.length,
+            stars: trailObject.stars,
+            star_votes: trailObject.starVotes,
+            summary: trailObject.summary,
+            trail_url: trailObject.url,
+            conditions: trailObject.conditionStatus + ' ' + trailObject.conditionDetails,
+            condition_date: trailObject.conditionDate.split(0, 10),
+            condition_time: trailObject.conditionDate.split(12, 19)
+        };
+    });
+}
+
+// function formatYelpArray(yelpArray) {
+//     return yelpArray.map(yelpObject => {
+//         return {
+//             name:
+//             image_url:
+//             price:
+//             rating:
+//             url:
+//         };
+//     });
+// }
