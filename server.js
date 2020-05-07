@@ -106,20 +106,7 @@ function formatTrailObject(trailArray) {
             summary: trailObject.summary,
             trail_url: trailObject.url,
             conditions: trailObject.conditionStatus + ' ' + trailObject.conditionDetails,
-            condition_date: trailObject.condition_time[0].split(0, 10),
-            condition_time: trailObject.condition_time[0].split(12, 19)
+            condition_date: trailObject.conditionDate.toString().slice(0, 10),
         };
     });
 }
-
-// function formatYelpArray(yelpArray) {
-//     return yelpArray.map(yelpObject => {
-//         return {
-//             name:
-//             image_url:
-//             price:
-//             rating:
-//             url:
-//         };
-//     });
-// }
