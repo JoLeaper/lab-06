@@ -13,16 +13,20 @@ const PORT = process.env.PORT || 3000;
 // - enable CORS
 app.use(cors());
 
-app.get('/location', async(req, res) => {
+app.get('/location', (req, res) => {
     try {
-        const searchedLocation = getLocation(res);
-        const formattedLocation = formatObject(searchedLocation);
-        res.json(formattedLocation);
+        getLocation(req).then((locationObject => {
+            const response = formatObject(locationObject);
+            // lat = response.latitude;
+            // lon = response.longitude;
+            res.json(response);
+        }));
     }
     catch(err) {
         res.status(500).send('Sorry something went wrong');
     }
 });
+
 app.get('/weather', (req, res) => {
     const object = formatWeatherObject();
     res.json(object);
@@ -32,10 +36,9 @@ app.get('/weather', (req, res) => {
 app.listen(PORT, () => console.log('listening on 3001'));
 
 // gets the object
-const getLocation = async(res) => {
-    const geoData = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${res}&format=json`);
-    const parsedData = JSON.parse(geoData.body)[0];
-    return parsedData;
+const getLocation = async(citySearched) => {
+    const geoData = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${citySearched}&format=json`);
+    return JSON.parse(geoData.text)[0];
 };
 
 // formats the object
