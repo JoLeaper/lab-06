@@ -106,8 +106,8 @@ function formatTrailObject(trailArray) {
             summary: trailObject.summary,
             trail_url: trailObject.url,
             conditions: trailObject.conditionStatus + ' ' + trailObject.conditionDetails,
-            condition_date: trailObject.conditionDate.split(0, 10),
-            condition_time: trailObject.conditionDate.split(12, 19)
+            condition_date: trailObject.condition_time.split(0, 10),
+            condition_time: trailObject.condition_time.split(12, 19)
         };
     });
 }
